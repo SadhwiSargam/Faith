@@ -26,7 +26,8 @@ load_dotenv()
 # ---------------------------
 # Gemini SDK setup
 # ---------------------------
-from google import genai
+import google.generativeai as genai
+
 
 GENAI_KEY = os.getenv("GEMINI_API_KEY")
 if not GENAI_KEY:
@@ -35,7 +36,8 @@ if not GENAI_KEY:
 
 # pick a model you have access to
 MODEL_NAME = "gemini-2.5-flash"
-client = genai.Client(api_key=GENAI_KEY)
+genai.configure(api_key=GEMINI_API_KEY)
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 MEMORY_FILE = "memory_store.json"
 
