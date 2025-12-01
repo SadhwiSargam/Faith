@@ -1,0 +1,15 @@
+[
+  {
+    "timestamp": "2025-12-01T11:34:02.045837+05:30",
+    "text": "I feel energetic today\n",
+    "mood_label": "undetected",
+    "valence": 0.0,
+    "arousal": 0.5,
+    "emotions": [],
+    "triggers": [],
+    "summary": "Sorry, I couldn't analyze this entry.",
+    "length": 23,
+    "error": true,
+    "error_text": "Sorry, I couldn't process this entry. Please try again later."
+  }
+]
