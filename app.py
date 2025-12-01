@@ -34,10 +34,9 @@ if not GENAI_KEY:
     st.error("GEMINI_API_KEY environment variable is missing. Set it before running the app.")
     st.stop()
 
-# pick a model you have access to
-MODEL_NAME = "gemini-2.5-flash"
-genai.configure(api_key=GEMINI_API_KEY)
+genai.configure(api_key=GENAI_KEY)
 model = genai.GenerativeModel("gemini-2.5-flash")
+
 
 MEMORY_FILE = "memory_store.json"
 
@@ -72,25 +71,15 @@ def save_memory(entries: List[Dict[str, Any]]):
 # Model call helper
 # ---------------------------
 def call_model(prompt: str) -> Dict[str, Any]:
-    """
-    Calls the Gemini model and returns {"success": bool, "text": str}.
-    Tries twice before failing gracefully.
-    """
-    for _ in range(2):
-        try:
-            response = client.models.generate_content(
-                model=MODEL_NAME,
-                # many SDK versions accept list-of-strings; if you get errors try contents=[{"type":"text","text":prompt}]
-                contents=[prompt]
-            )
-            text = getattr(response, "text", None)
-            if text is None:
-                # some SDK returns structured object — stringify safely
-                text = str(response)
-            return {"success": True, "text": text}
-        except Exception as e:
-            time.sleep(1)
-    return {"success": False, "text": "Sorry, I couldn't process this entry. Please try again later."}
+    try:
+        response = model.generate_content(prompt)
+        text = getattr(response, "text", None)
+        if text is None:
+            text = str(response)
+        return {"success": True, "text": text}
+    except Exception as e:
+        return {"success": False, "text": str(e)}
+
 
 # ---------------------------
 # AGENT 1: Intake (robust prompt)
